@@ -1,22 +1,62 @@
 import { useState } from "react"
+import useAuth from "../../hooks/useAuth"
+import ValidationError from '../../components/ValidationError'
 
 function Register() {
+
+    // menambahkan field penting dari register
+    const [nopeg, setNopeg] = useState('')
+    const [phone, setPhone] = useState('')
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
+    const { register, errors } = useAuth()
 
-    function handleSubmit(event) {
+    // proses simpan
+    async function handleSubmit(event) {
         event.preventDefault()
-        const data = { name, email, password, passwordConfirmation }
-        console.log(data)
+        await register({ nopeg, phone, name, email, password, password_confirmation: passwordConfirmation })
+        setPassword('')
+        setPasswordConfirmation('')
+
     }
     return (
         <form onSubmit={handleSubmit} noValidate>
             <div className="flex flex-col mx-auto md:w-96 w-full">
 
                 <h1 className="heading">Register</h1>
+
+                {/* nopeg */}
+                <div className="flex flex-col gap-2 mb-4">
+                    <label htmlFor="nopeg" className="required">Nopeg</label>
+                    <input
+                        type="number"
+                        id="nopeg"
+                        name="nopeg"
+                        value={nopeg}
+                        onChange={event => setNopeg(event.target.value)}
+                        className="form-input"
+                        autoComplete="nopeg"
+                    />
+                    <ValidationError errors={errors} field="nopeg" />
+                </div>
+
+                {/* phone */}
+                <div className="flex flex-col gap-2 mb-4">
+                    <label htmlFor="phone" className="required">Phone</label>
+                    <input
+                        type="text"
+                        id="phone"
+                        name="phone"
+                        value={phone}
+                        onChange={event => setPhone(event.target.value)}
+                        className="form-input"
+                        autoComplete="phone"
+                    />
+                    <ValidationError errors={errors} field="phone" />
+                </div>
 
                 {/* register */}
                 <div className="flex flex-col gap-2 mb-4">
@@ -28,7 +68,9 @@ function Register() {
                         value={name}
                         onChange={event => setName(event.target.value)}
                         className="form-input"
-                        autoComplete="name" />
+                        autoComplete="name"
+                    />
+                    <ValidationError errors={errors} field="name" />
                 </div>
 
                 {/* email */}
@@ -41,7 +83,9 @@ function Register() {
                         value={email}
                         className="form-input"
                         onChange={event => setEmail(event.target.value)}
-                        autoComplete="email" />
+                        autoComplete="email"
+                    />
+                    <ValidationError errors={errors} field="email" />
                 </div>
 
                 {/* password */}
@@ -56,6 +100,7 @@ function Register() {
                         className="form-input"
                         autoComplete="new-password"
                     />
+                    <ValidationError errors={errors} field="password" />
                 </div>
                 {/* confirm password */}
                 <div className="flex flex-col gap-2">
