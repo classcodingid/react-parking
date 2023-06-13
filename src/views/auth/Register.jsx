@@ -1,6 +1,7 @@
 import { useState } from "react"
 import useAuth from "../../hooks/useAuth"
 import ValidationError from '../../components/ValidationError'
+import IconSpinner from '../../components/IconSpinner'
 
 function Register() {
 
@@ -12,12 +13,13 @@ function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
-    const { register, errors } = useAuth()
+    const { register, errors, loading } = useAuth()
 
     // proses simpan
     async function handleSubmit(event) {
         event.preventDefault()
         await register({ nopeg, phone, name, email, password, password_confirmation: passwordConfirmation })
+
         setPassword('')
         setPasswordConfirmation('')
 
@@ -39,6 +41,7 @@ function Register() {
                         onChange={event => setNopeg(event.target.value)}
                         className="form-input"
                         autoComplete="nopeg"
+                        disabled={loading}
                     />
                     <ValidationError errors={errors} field="nopeg" />
                 </div>
@@ -54,6 +57,7 @@ function Register() {
                         onChange={event => setPhone(event.target.value)}
                         className="form-input"
                         autoComplete="phone"
+                        disabled={loading}
                     />
                     <ValidationError errors={errors} field="phone" />
                 </div>
@@ -69,6 +73,7 @@ function Register() {
                         onChange={event => setName(event.target.value)}
                         className="form-input"
                         autoComplete="name"
+                        disabled={loading}
                     />
                     <ValidationError errors={errors} field="name" />
                 </div>
@@ -84,6 +89,7 @@ function Register() {
                         className="form-input"
                         onChange={event => setEmail(event.target.value)}
                         autoComplete="email"
+                        disabled={loading}
                     />
                     <ValidationError errors={errors} field="email" />
                 </div>
@@ -99,6 +105,7 @@ function Register() {
                         onChange={event => setPassword(event.target.value)}
                         className="form-input"
                         autoComplete="new-password"
+                        disabled={loading}
                     />
                     <ValidationError errors={errors} field="password" />
                 </div>
@@ -113,6 +120,7 @@ function Register() {
                         onChange={event => setPasswordConfirmation(event.target.value)}
                         className="form-input"
                         autoComplete="new-password"
+                        disabled={loading}
                     />
                 </div>
 
@@ -122,7 +130,9 @@ function Register() {
                 <div className="flex flex-col gap-2 mb-4">
                     <button
                         type="submit"
-                        className="btn btn-primary">
+                        className="btn btn-primary"
+                        disabled={loading}>
+                        {loading && <IconSpinner />}
                         Register
                     </button>
                 </div>

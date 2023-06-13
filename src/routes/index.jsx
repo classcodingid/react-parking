@@ -1,7 +1,11 @@
 const routeNames = {
     'home': '/',
     'register': '/register',
+    'login': '/login',
+    'profile.edit': '/profile',
+    'profile.change-password': '/profile/change-password',
     'vehicles.index': '/vehicles',
+    'parkings.active': '/parkings/active',
 }
 
 function route(name, params = {}) {
